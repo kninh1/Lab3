@@ -9,7 +9,7 @@ format:
 ##install.packages("data.table")    # Install & load data.table package
 ##library("data.table")
 
-##install.packages('R.utils')
+install.packages('R.utils')
 
 ##install.packages("leaflet")
 ##library(leaflet)

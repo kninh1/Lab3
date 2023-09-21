@@ -1,35 +1,63 @@
 ---
-title: "Lab 3"
-format: html
-editor: visual
-
-format:
-  html:
-    embed-resources: true
+format: 
+   html:
+      embed-resources: true
 ---
 
 ```{r}
+
+##install.packages("data.table")    # Install & load data.table package
+##library("data.table")
+
+##install.packages('R.utils')
+
+##install.packages("leaflet")
+##library(leaflet)
+##library(stringr)
+
+##install.packages("sp")
+##library(sp)
+
+##install.packages("maps")
+##library(maps)
+
+##install.packages("leaflet")
+##library(leaflet)
+##library(stringr)
+
+##install.packages("sp")
+##library(sp)
+
+##install.packages("maps")
+##library(maps)
+##install.packages("lubridate")    
+##library(lubridate)
+
+##--------------------------------------------------------------------
+
+
 download.file(
   "https://raw.githubusercontent.com/USCbiostats/data-science-data/master/02_met/met_all.gz",
-  destfile = file.path("C:\\PM566KatrinaNinh\\met_all.gz"),
+  destfile = "met_all.gz",
   method   = "libcurl",
   timeout  = 60
 )
-install.packages('R.utils')
-met <- data.table::fread(file.path("C:\\PM566KatrinaNinh\\met_all.gz"))
 
-## ----------- Step 2: Check the dimensions, headers, footers. How many columns, rows are there?  -------
+met <- data.table::fread(file.path("met_all.gz"))
+
+## ---- Step 2: Check the dimensions, headers, footers. How many columns, rows are there?  -------
 
 dim(met)
-##[1] 2377343      30
 
 head(met)
 
-## ------------------------------- Step 3: Take a look at the variables --------------------------------
+## ------ Step 3: Take a look at the variables ---------------
 
 str(met)
 
-## ------------------------------- Step 4: Take a closer look at the key variables ----------------------
+
+
+## ------ Step 4: Take a closer look at the key variables -------
 
 table(met$year)
 
@@ -43,7 +71,6 @@ summary(met$elev)
 
 summary(met$wind.sp)
 
-
 met[met$elev==9999.0] <- NA
 summary(met$elev)
 
@@ -52,7 +79,7 @@ met2 <- met[order(temp)]
 head(met2)
 summary(met2$temp)
 
-##We again notice that there is a -17.2C temperature reading that seems suspicious.
+
 
 ## -------------- Step 5: Check the data against an external data source -------------------
 
@@ -61,11 +88,22 @@ met2 <- met[order(temp)]
 head(met2)
 summary(met2$temp)
 
+##Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##-3.00   19.60   23.50   23.59   27.80   56.00 
+
 
 ## ------------------------- Step 6 : Calculate summary statistics ------------------------
 
 elev <- met[elev==max(elev), ]
 summary(elev)
+
+##USAFID            WBAN          year          month        day            hour            min             lat      
+##Min.   :720385   Min.   :419   Min.   :2019   Min.   :8   Min.   : 1.0   Min.   : 0.00   Min.   : 6.00   Min.   :39.8  
+##1st Qu.:720385   1st Qu.:419   1st Qu.:2019   1st Qu.:8   1st Qu.: 8.0   1st Qu.: 6.00   1st Qu.:13.00   1st Qu.:39.8  
+##Median :720385   Median :419   Median :2019   Median :8   Median :16.0   Median :12.00   Median :36.00   Median :39.8  
+##Mean   :720385   Mean   :419   Mean   :2019   Mean   :8   Mean   :16.1   Mean   :11.66   Mean   :34.38   Mean   :39.8  
+##3rd Qu.:720385   3rd Qu.:419   3rd Qu.:2019   3rd Qu.:8   3rd Qu.:24.0   3rd Qu.:18.00   3rd Qu.:53.00   3rd Qu.:39.8  
+##Max.   :720385   Max.   :419   Max.   :2019   Max.   :8   Max.   :31.0   Max.   :23.00   Max.   :59.00   Max.   :39.8  
 
 cor(elev$temp, elev$wind.sp, use="complete")
 ## [1] -0.09373843
@@ -90,25 +128,27 @@ hist(met$temp)
 hist(met$wind.sp)
 ## See graph in RStudio
 
-install.packages("leaflet")
 library(leaflet)
-library(stringr)
-
-install.packages("sp")
-library(sp)
-
-install.packages("maps")
-library(maps)
-
+#library(stringr)
 
 leaflet(elev) %>%
   addProviderTiles('OpenStreetMap') %>% 
   addCircles(lat=~lat,lng=~lon, opacity=1, fillOpacity=1, radius=100)
 
-install.packages("lubridate")    
 library(lubridate)
+
 elev$date <- with(elev, ymd_h(paste(year, month, day, hour, sep= ' ')))
+elev$date
+
 summary(elev$date)
+
+##                       Min.                    1st Qu. 
+## "2019-08-01 00:00:00.0000" "2019-08-08 11:00:00.0000" 
+##                     Median                       Mean 
+## "2019-08-16 22:00:00.0000" "2019-08-16 14:09:56.8823" 
+##                    3rd Qu.                       Max. 
+## "2019-08-24 11:00:00.0000" "2019-08-31 22:00:00.0000"
+
 
 elev <- elev[order(date)]
 head(elev)
@@ -119,6 +159,7 @@ head(elev)
 plot(elev$date, elev$temp, type='l')
 
 plot(elev$date, elev$wind.sp, type='l')
+
 
 
 ##Summary

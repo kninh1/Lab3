@@ -1,34 +1,23 @@
 ---
-author: Katrina Ninh
-title: Lab 3
-subtitle: | Introduction to Health Data Science - PM566
-author: "Katrina Ninh"
+title: "Lab 3"
+format: html
+editor: visual
 
 format:
   html:
     embed-resources: true
 ---
 
-
-```{r echo=FALSE}
-
-library(data.table)
-library(tidyverse)
-install.packages('R.utils')
-
-##install.packages("data.table")    # Install & load data.table package
-library("data.table")
-
-## Do this once - then comment these lines out to save time
+```{r}
 download.file(
   "https://raw.githubusercontent.com/USCbiostats/data-science-data/master/02_met/met_all.gz",
   destfile = file.path("C:\\PM566KatrinaNinh\\met_all.gz"),
   method   = "libcurl",
   timeout  = 60
 )
-
+install.packages('R.utils')
 met <- data.table::fread(file.path("C:\\PM566KatrinaNinh\\met_all.gz"))
-                         
+
 ## ----------- Step 2: Check the dimensions, headers, footers. How many columns, rows are there?  -------
 
 dim(met)
@@ -101,14 +90,14 @@ hist(met$temp)
 hist(met$wind.sp)
 ## See graph in RStudio
 
-##install.packages("leaflet")
+install.packages("leaflet")
 library(leaflet)
 library(stringr)
 
-##install.packages("sp")
+install.packages("sp")
 library(sp)
 
-##install.packages("maps")
+install.packages("maps")
 library(maps)
 
 
@@ -116,7 +105,7 @@ leaflet(elev) %>%
   addProviderTiles('OpenStreetMap') %>% 
   addCircles(lat=~lat,lng=~lon, opacity=1, fillOpacity=1, radius=100)
 
-##install.packages("lubridate")    
+install.packages("lubridate")    
 library(lubridate)
 elev$date <- with(elev, ymd_h(paste(year, month, day, hour, sep= ' ')))
 summary(elev$date)
@@ -142,3 +131,5 @@ plot(elev$date, elev$wind.sp, type='l')
 ## - Wind speed varies throughout the day
 ## - Wind speed range is also smaller at the beginning of August and late August and higher mid August
 
+
+```

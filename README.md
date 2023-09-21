@@ -1,4 +1,4 @@
-# Example Assignment
+# Example Assignment test
 
 This repository includes a GitHub Actions workflow that will automatically look for a file named `submit.qmd` and render it to an HTML document. You can include as many other files as you want, but only `submit.qmd` will trigger the workflow.
 
